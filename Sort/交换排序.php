@@ -41,7 +41,7 @@ function bubble_sort_1(&$arr)
 
 echo "bubble_sort_1\n";
 $nums1 = [-1, 5, 3, 1, 50, 12];
-bubble_sort($nums1);
+bubble_sort_1($nums1);
 print_r($nums1);
 
 
@@ -71,14 +71,38 @@ print_r($nums2);
 //========================================//
 
 // 快速排序
-function quick_sort(array &$arr, int $start, int $end)
+function quick_sort(array $arr): array
+{
+    if (count($arr) <= 1) {
+        return $arr;
+    }
+    $left = $right = [];
+    $mid = $arr[0];
+    for ($i = 1; $i < count($arr); $i++) {
+        if ($arr[$i] > $mid) {
+            $right[] = $arr[$i];
+        } else {
+            $left[] = $arr[$i];
+        }
+    }
+    $left = quick_sort($left);
+    $right = quick_sort($right);
+    return array_merge($left, [$mid], $right);
+}
+
+echo "quick_sort\n";
+$nums = [-1, 5, 10, 3, 1, 50, 12];
+print_r(quick_sort($nums));
+
+// 快速排序
+function quick_sort_1(array &$arr, int $start, int $end)
 {
     if ($start >= $end) {
         return;
     }
     $left = $start;
     $right = $end;
-    $mid = $arr[$start];
+    $mid = $arr[$left];
     while ($left < $right) {
         while ($arr[$right] >= $mid && $left < $right) {
             $right--;
@@ -91,11 +115,11 @@ function quick_sort(array &$arr, int $start, int $end)
         $arr[$right] = $arr[$left];
     }
     $arr[$left] = $mid;
-    quick_sort($arr, $start, $left - 1);
-    quick_sort($arr, $left + 1, $end);
+    quick_sort_1($arr, $start, $left - 1);
+    quick_sort_1($arr, $left + 1, $end);
 }
 
-echo "quick_sort\n";
-$nums = [-1, 5, 10, 3, 1, 50, 12];
-quick_sort($nums, 0, count($nums) - 1);
-print_r($nums);;
+echo "quick_sort_1\n";
+$nums_q1 = [-1, 5, 10, 3, 1, 50, 12];
+quick_sort_1($nums_q1, 0, count($nums_q1) - 1);
+print_r($nums_q1);
